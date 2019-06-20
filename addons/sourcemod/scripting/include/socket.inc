@@ -12,13 +12,15 @@ enum SocketType {
 	SOCKET_RAW
 }
 
-#define EMPTY_HOST 1
-#define NO_HOST 2
-#define CONNECT_ERROR 3
-#define SEND_ERROR 4
-#define BIND_ERROR 5
-#define RECV_ERROR 6
-#define LISTEN_ERROR 7
+enum {
+	EMPTY_HOST = 1,
+	NO_HOST,
+	CONNECT_ERROR,
+	SEND_ERROR,
+	BIND_ERROR,
+	RECV_ERROR,
+	LISTEN_ERROR
+}
 
 
 /*************************************************************************************************/
@@ -200,7 +202,7 @@ enum SocketOption {
  * @param arg		The argument set by SocketSetArg()
  * @noreturn
  */
-typedef SocketConnectCB = function void(Handle socket, any arg);
+typedef SocketConnectCB = function void (Handle socket, any arg);
 
 /**
  * triggered if a listening socket received an incoming connection and is ready to be used
@@ -213,7 +215,7 @@ typedef SocketConnectCB = function void(Handle socket, any arg);
  * @param any		arg			The argument set by SocketSetArg() for the listen-socket
  * @noreturn
  */
-typedef SocketIncomingCB = function void(Handle socket, Handle newSocket, const char[] remoteIP, int remotePort, any arg);
+typedef SocketIncomingCB = function void (Handle socket, Handle newSocket, const char[] remoteIP, int remotePort, any arg);
 
 /**
  * triggered if a socket receives data
@@ -229,7 +231,7 @@ typedef SocketIncomingCB = function void(Handle socket, Handle newSocket, const 
  * @param any		arg			The argument set by SocketSetArg() for the socket
  * @noreturn
  */
-typedef SocketReceiveCB = function void(Handle socket, const char[] receiveData, const int dataSize, any arg);
+typedef SocketReceiveCB = function void (Handle socket, const char[] receiveData, const int dataSize, any arg);
 
 /**
  * called after a socket sent all items in its send queue successfully
@@ -238,7 +240,7 @@ typedef SocketReceiveCB = function void(Handle socket, const char[] receiveData,
  * @param any		arg			The argument set by SocketSetArg() for the socket
  * @noreturn
  */
-typedef SocketSendqueueEmptyCB = function void(Handle socket, any arg);
+typedef SocketSendqueueEmptyCB = function void (Handle socket, any arg);
 
 /**
  * called if a socket has been properly disconnected by the remote side
@@ -249,7 +251,7 @@ typedef SocketSendqueueEmptyCB = function void(Handle socket, any arg);
  * @param any		arg			The argument set by SocketSetArg() for the socket
  * @noreturn
  */
-typedef SocketDisconnectCB = function void(Handle socket, any arg);
+typedef SocketDisconnectCB = function void (Handle socket, any arg);
 
 /**
  * called if an unrecoverable error occured, close the socket without an additional call to a disconnect callback
@@ -262,7 +264,7 @@ typedef SocketDisconnectCB = function void(Handle socket, any arg);
  * @param any		arg			The argument set by SocketSetArg() for the socket
  * @noreturn
  */
-typedef SocketErrorCB = function void(Handle socket, const int errorType, const int errorNum, any arg);
+typedef SocketErrorCB = function void (Handle socket, const int errorType, const int errorNum, any arg);
 
 /*************************************************************************************************/
 /******************************************** natives ********************************************/
@@ -292,7 +294,8 @@ native Handle SocketCreate(SocketType protocol=SOCKET_TCP, SocketErrorCB efunc);
 /**
  * Binds the socket to a local address
  *
- * @param Handle	socket		The handle of the socket to be used. * @param String	hostname	The hostname (or IP) to bind the socket to.
+ * @param Handle	socket		The handle of the socket to be used.
+ * @param String	hostname	The hostname (or IP) to bind the socket to.
  * @param cell_t	port		The port to bind the socket to.
  * @return bool 				true on success
  */
@@ -308,11 +311,12 @@ native bool SocketBind(Handle socket, const char[] hostname, int port);
  * @param Handle				socket		The handle of the socket to be used.
  * @param SocketConnectCB		cfunc		The connect callback
  * @param SocketReceiveCB		rfunc		The receive callback
- * @param SocketDisconnectCB	dfunc		The disconnect callback * @param String				hostname	The hostname (or IP) to connect to.
+ * @param SocketDisconnectCB	dfunc		The disconnect callback
+ * @param String				hostname	The hostname (or IP) to connect to.
  * @param cell_t				port		The port to connect to.
  * @noreturn
  */
-native void SocketConnect(Handle socket, SocketConnectCB cfunc, SocketReceiveCB rfunc, SocketDisconnectCB dfunc, const char[] hostname, port);
+native void SocketConnect(Handle socket, SocketConnectCB cfunc, SocketReceiveCB rfunc, SocketDisconnectCB dfunc, const char[] hostname, int port);
 
 /**
  * Disconnects a socket
@@ -345,10 +349,12 @@ native bool SocketListen(Handle socket, SocketIncomingCB ifunc);
  *
  * @param Handle	socket	The handle of the socket to be used.
  * @param String	data	The data to send.
- * @noreturn */
+ * @noreturn
+ */
 native void SocketSend(Handle socket, const char[] data, int size=-1);
 
-/** * Sends UDP data through the socket to a specific destination.
+/**
+ * Sends UDP data through the socket to a specific destination.
  *
  * @note specify size for binary safe operation
  * @note if size is not specified the \0 terminator will not be included
@@ -361,7 +367,8 @@ native void SocketSend(Handle socket, const char[] data, int size=-1);
  * @param String	data	The data to send.
  * @param String	hostname	The hostname (or IP) to send to.
  * @param cell_t	port		The port to send to.
- * @noreturn */
+ * @noreturn
+ */
 native void SocketSendTo(Handle socket, const char[] data, int size=-1, const char[] hostname, int port);
 
 /**
@@ -370,8 +377,9 @@ native void SocketSendTo(Handle socket, const char[] data, int size=-1, const ch
  * @param Handle		socket	The handle of the socket to be used. May be INVALID_HANDLE if not essential.
  * @param SocketOption	option	The option to modify (see enum SocketOption for details).
  * @param cellt_		value	The value to set the option to.
- * @return cell_t			1 on success. */
-native void SocketSetOption(Handle socket, SocketOption option, int value);
+ * @return cell_t			1 on success.
+ */
+native int SocketSetOption(Handle socket, SocketOption option, int value);
 
 
 /**
@@ -441,12 +449,12 @@ native void SocketSetArg(Handle socket, any arg);
  *
  * @return			1 on success
  */
-native void SocketGetHostName(char[] dest, int destLen);
+native int SocketGetHostName(char[] dest, int destLen);
 
 /**
  * _________________Do not edit below this line!_______________________
  */
-public Extension:__ext_smsock = 
+public Extension __ext_smsock = 
 {
 	name = "Socket",
 	file = "socket.ext",
