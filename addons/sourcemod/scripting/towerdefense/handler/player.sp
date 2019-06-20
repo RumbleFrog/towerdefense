@@ -343,7 +343,8 @@ stock void Player_USetFloat(int iUserId, const char[] sKey, float fValue) {
 	Format(sUserIdKey, sizeof(sUserIdKey), "%d_%s", iUserId, sKey);
 	
 	char sValue[64];
-	FloatToString(fValue, sValue, sizeof(sValue))
+	
+	FloatToString(fValue, sValue, sizeof(sValue));
 	
 	Player_OnDataSet(iUserId, GetClientOfUserId(iUserId), sKey, TDDataType_Integer, -1, false, fValue, "");
 	
@@ -420,7 +421,7 @@ stock void Player_AddHealth(int iClient, int iHealth, bool ignoreMax=false) {
 			SetEntityHealth(iClient, GetClientHealth(iClient) + iHealth);
 		} else {
 			int iCurrentHealth = GetEntProp(iClient, Prop_Send, "m_iHealth");
-			int iMaxHealth = GetEntData(iClient, FindDataMapOffs(iClient, "m_iMaxHealth"));
+			int iMaxHealth = GetEntProp(iClient, Prop_Send, "m_iMaxHealth");
 			if(iCurrentHealth < iMaxHealth) {
 				SetEntityHealth(iClient, GetClientHealth(iClient) + iHealth);
 			}

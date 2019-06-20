@@ -15,8 +15,8 @@
  * @return				The clients current metal.
  */
 
-stock int GetClientMetal(int iClient) {
-	return GetEntData(iClient, FindDataMapOffs(iClient, "m_iAmmo") + (3 * 4), 4);
+stock int GetClientMetal(int iClient) {	
+	return GetEntProp(iClient, Prop_Send, "m_iAmmo", 4);
 }
 
 /**
@@ -28,7 +28,7 @@ stock int GetClientMetal(int iClient) {
  */
 
 stock void SetClientMetal(int iClient, int iMetal) {
-	SetEntData(iClient, FindDataMapOffs(iClient, "m_iAmmo") + (3 * 4), iMetal, 4);
+	SetEntProp(iClient, Prop_Send, "m_iAmmo", iMetal, 4);
 	
 	Log(TDLogLevel_Trace, "Set %N's metal to %d", iClient, iMetal);
 }

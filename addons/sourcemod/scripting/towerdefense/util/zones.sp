@@ -349,7 +349,7 @@ stock bool IsClientInZone(int iClient, float fPoint[8][3]) {
  */
 
 stock bool IsClientInZone2(int iClient, float fPoint[8][3], int iID) {
-	float fPlayerPosition[3], Float fPlayerPoint[8][3];
+	float fPlayerPosition[3], fPlayerPoint[8][3];
 	
 	GetEntPropVector(iClient, Prop_Send, "m_vecOrigin", fPlayerPosition);
 	fPlayerPosition[2] += 41.5;
