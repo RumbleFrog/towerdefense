@@ -279,7 +279,7 @@ public Action ShowMotd(Handle hTimer, DataPack hPack) {
 	hPack.Reset();
 	
 	
-	int iClient = GetClientOfUserId(hPack.ReadCell()));
+	int iClient = GetClientOfUserId(hPack.ReadCell());
 	Handle hKeyValues = view_as<Handle>(hPack.ReadCell());
 	
 	if (!IsValidClient(iClient)) {
