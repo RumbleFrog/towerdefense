@@ -264,21 +264,23 @@ public Action Event_PlayerVGUIMenu(UserMsg iMessageId, Handle hBitBuffer, const 
 		KvSetString(hKeyValues, sBuffer1, sBuffer2);
 	}
 	
-	Handle hPack;
+	DataPack hPack;
 	
-	CreateDataTimer(0.0, ShowMotd, hPack, TIMER_FLAG_NO_MAPCHANGE);
+	hPack.WriteCell(GetClientUserId(iPlayers[0]));
+	hPack.WriteCell(view_as<int>(hKeyValues));
 	
-	WritePackCell(hPack, GetClientUserId(iPlayers[0]));
-	WritePackCell(hPack, view_as<int>(hKeyValues));
+	// Disable motd, expired domain (Shows ads)
+	// CreateDataTimer(0.0, ShowMotd, hPack, TIMER_FLAG_NO_MAPCHANGE);
 	
 	return Plugin_Handled;
 }
 
-public Action ShowMotd(Handle hTimer, Handle hPack) {
-	ResetPack(hPack);
+public Action ShowMotd(Handle hTimer, DataPack hPack) {
+	hPack.Reset();
 	
-	int iClient = GetClientOfUserId(ReadPackCell(hPack));
-	Handle hKeyValues = view_as<Handle>(ReadPackCell(hPack));
+	
+	int iClient = GetClientOfUserId(hPack.ReadCell()));
+	Handle hKeyValues = view_as<Handle>(hPack.ReadCell());
 	
 	if (!IsValidClient(iClient)) {
 		CloseHandle(hKeyValues);
