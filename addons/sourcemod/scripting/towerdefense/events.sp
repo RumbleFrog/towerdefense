@@ -264,7 +264,7 @@ public Action Event_PlayerVGUIMenu(UserMsg iMessageId, Handle hBitBuffer, const 
 		KvSetString(hKeyValues, sBuffer1, sBuffer2);
 	}
 	
-	DataPack hPack;
+	DataPack hPack = new DataPack();
 	
 	hPack.WriteCell(GetClientUserId(iPlayers[0]));
 	hPack.WriteCell(view_as<int>(hKeyValues));
