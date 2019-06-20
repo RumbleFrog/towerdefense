@@ -343,7 +343,7 @@ public Action TF2_CalcIsAttackCritical(int iClient, int iWeapon, char[] sClassna
 		SetEntData(iWeapon, FindSendPropInfo("CTFWeaponBase", "m_iClip1"), 100, _, true);
 		SetEntData(iClient, FindSendPropInfo("CTFPlayer", "m_iAmmo") + 4, 100);
 		SetEntData(iClient, FindSendPropInfo("CTFPlayer", "m_iAmmo") + 8, 100);
-		SetEntProp(iClient, Prop_Send, "m_iAmmo", 100);
+		SetEntProp(iClient, Prop_Data, "m_iAmmo", 100, 4, 3);
 	}
 	
 	//Calculate crit chances

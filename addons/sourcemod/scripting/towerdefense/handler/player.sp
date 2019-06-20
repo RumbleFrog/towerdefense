@@ -421,7 +421,7 @@ stock void Player_AddHealth(int iClient, int iHealth, bool ignoreMax=false) {
 			SetEntityHealth(iClient, GetClientHealth(iClient) + iHealth);
 		} else {
 			int iCurrentHealth = GetEntProp(iClient, Prop_Send, "m_iHealth");
-			int iMaxHealth = GetEntProp(iClient, Prop_Send, "m_iMaxHealth");
+			int iMaxHealth = GetEntProp(iClient, Prop_Data, "m_iMaxHealth");
 			if(iCurrentHealth < iMaxHealth) {
 				SetEntityHealth(iClient, GetClientHealth(iClient) + iHealth);
 			}
