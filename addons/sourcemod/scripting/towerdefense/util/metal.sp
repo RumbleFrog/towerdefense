@@ -16,7 +16,9 @@
  */
 
 stock int GetClientMetal(int iClient) {	
-	return GetEntProp(iClient, Prop_Send, "m_iAmmo", 4);
+	// Table: m_iAmmo (offset 1752) (type m_iAmmo)
+	
+	return GetEntProp(iClient, Prop_Data, "m_iAmmo", 4, 3);
 }
 
 /**
@@ -28,7 +30,7 @@ stock int GetClientMetal(int iClient) {
  */
 
 stock void SetClientMetal(int iClient, int iMetal) {
-	SetEntProp(iClient, Prop_Send, "m_iAmmo", iMetal, 4);
+	SetEntProp(iClient, Prop_Data, "m_iAmmo", iMetal, 4, 3);
 	
 	Log(TDLogLevel_Trace, "Set %N's metal to %d", iClient, iMetal);
 }
