@@ -823,6 +823,9 @@ ALTER TABLE `player`
   ADD KEY `fk_player_server_first_idx` (`first_server`),
   ADD KEY `fk_player_server_last_idx` (`last_server`),
   ADD KEY `fk_player_server_current_idx` (`current_server`);
+  
+ALTER TABLE `player`
+  MODIFY `player_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Indexes for table `player_achievement`

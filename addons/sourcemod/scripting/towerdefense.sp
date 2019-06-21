@@ -16,6 +16,8 @@
 =            Constants            =
 =================================*/
 
+// #define DEBUG
+
 #define PLUGIN_NAME		"TF2 Tower Defense"
 #define PLUGIN_AUTHOR	"floube, benedevil, hurpdurp"
 #define PLUGIN_DESC		"Stop enemies from crossing a map by buying towers and building up defenses."
@@ -99,7 +101,11 @@ public APLRes AskPluginLoad2(Handle hMyself, bool bLate, char[] sError, int iMax
 public void OnPluginStart() {
 	PrintToServer("%s Loaded %s %s by %s", PLUGIN_PREFIX, PLUGIN_NAME, PLUGIN_VERSION, PLUGIN_AUTHOR);
 	
-	Log_Initialize(TDLogLevel_Trace, TDLogType_Console);
+	#if defined DEBUG
+		Log_Initialize(TDLogLevel_Trace, TDLogType_Console);
+	#else
+		Log_Initialize(TDLogLevel_Info, TDLogType_Console);
+	#endif
 	
 	CreateDataMap(g_hMapTowers);
 	CreateDataMap(g_hMapWeapons);
