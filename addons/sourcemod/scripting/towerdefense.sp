@@ -297,6 +297,8 @@ public void OnClientPostAdminCheck(int iClient) {
 		
 		Player_Connected(GetClientUserId(iClient), iClient, sName, sSteamId, sCommunityId, sIp);
 	}
+
+	SendConVarValue(iClient, FindConVar("sv_cheats"), "0");
 	
 	SDKHook(iClient, SDKHook_OnTakeDamage, OnTakeDamage);
 	SDKHook(iClient, SDKHook_OnTakeDamagePost, OnTakeDamagePost);
