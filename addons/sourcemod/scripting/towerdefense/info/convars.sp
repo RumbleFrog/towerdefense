@@ -22,6 +22,11 @@ stock void SetConVars() {
 
 stock void SetPregameConVars() {
 	FindConVar("sv_cheats").SetInt(1, true, false);
+
+
+	for (int i = 1; i <= MaxClients; i++)
+		if (IsValidClient(i))
+			SendConVarValue(i, FindConVar("sv_cheats"), "0");
 }
 
 /**
